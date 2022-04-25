@@ -10,7 +10,6 @@ pipeline {
             steps {
                 sh '''
                     echo "running the tests ......."
-                    mvn clean test
                 '''
             }
         }
