@@ -1,0 +1,15 @@
+# Build
+# :3.8.5-jdk-8
+FROM maven:3.8.5-jdk-8 AS build
+WORKDIR /usr/app/
+COPY pom.xml /usr/app/pom.xml
+RUN mvn dependency:go-offline -B
+COPY src /usr/app/src
+RUN mvn package -DskipTests
+
+# Run
+FROM openjdk:alpine
+COPY --from=build /usr/app/target/metadata-service.jar .
+EXPOSE 8080
+ENTRYPOINT java -jar metadata-service.jar
+# CMD ["java", "-jar", "target/metadata-service.jar"]
